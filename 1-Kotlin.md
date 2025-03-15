@@ -330,4 +330,63 @@ fun doStudy(study: Study?) {
 printParams(str = "world", num = 123) 
 ```
 
+## 标准函数和静态方法
 
+**let**：配合`?.`操作符辅助判空。
+
+```kotlin
+fun doStudy(study: Study?) { 
+    study?.let { // it == study，仅 study 非空时执行
+        it.readBooks() 
+        it.doHomework() 
+    } 
+} 
+```
+
+**with**：简化连续调用同一个对象的多个方法。
+
+```kotlin
+val result = with(obj) { 
+    // 这里是obj的上下文 
+    "value" // with函数的返回值 
+} 
+val result = with(StringBuilder()) { 
+    append("Start eating fruits.\n") // 代替 builder.append().append()..
+    for (fruit in list) { 
+        append(fruit).append("\n") 
+    } 
+    append("Ate all fruits.") 
+    toString() 
+}
+```
+
+**run**：只接收一个 Lambda 参数，要在某个对象的基础上调用的 with：
+
+```kotlin
+val list = listOf("Apple", "Banana", "Orange", "Pear", "Grape") 
+val result = StringBuilder().run { 
+    append("Start eating fruits.\n") 
+    for (fruit in list) {
+        append(fruit).append("\n") 
+    } 
+    append("Ate all fruits.") 
+    toString() 
+} 
+```
+
+**apply**：不能指定返回值的 run：
+
+```kotlin
+val result = StringBuilder().apply { 
+    append("Start eating fruits.\n") 
+    for (fruit in list) { 
+        append(fruit).append("\n") 
+    } 
+    append("Ate all fruits.") 
+} 
+println(result.toString()) 
+```
+
+### 静态方法
+
+纯静态类可以用单例类代替，若希望普通类中存在静态方法，可以使用`companion object`，其原理不同于真正的静态方法。若要使用真正的静态方法，使用顶层方法，可以在任意位置直接调用。
