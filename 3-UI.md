@@ -280,3 +280,15 @@ binding.recyclerView.adapter = adapter
 binding.recyclerView.layoutManager =
     StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
 ```
+
+**注册点击事件**
+
+应在`onCreateViewHolder()`中进行：
+
+```kotlin
+val viewHolder = ViewHolder(view)
+viewHolder.fruitButton.setOnClickListener {
+    Toast.makeText(view.context, "HI", Toast.LENGTH_SHORT).show()
+}
+return viewHolder
+```

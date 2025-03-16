@@ -390,3 +390,103 @@ println(result.toString())
 ### 静态方法
 
 纯静态类可以用单例类代替，若希望普通类中存在静态方法，可以使用`companion object`，其原理不同于真正的静态方法。若要使用真正的静态方法，使用顶层方法，可以在任意位置直接调用。
+
+## 延迟初始化
+
+`::adapter.isInitialized`可用于判断 adapter 变量是否已经初始化。
+
+## 密封类
+
+通过`sealed class`声明，此后使用`when()`的时候，必须判断所有子类才能通过编译：
+
+```kotlin
+when (holder) { 
+    is LeftViewHolder -> holder.leftMsg.text = msg.content 
+    is RightViewHolder -> holder.rightMsg.text = msg.content 
+} 
+```
+
+## 扩展函数
+
+kotlin 允许将对象的函数进行扩展。
+
+## 重载运算符
+
+kotlin 允许重载对象之间的运算符，也允许重载不同对象之间的运算符。
+
+```kotlin
+class Money(val value: Int) { 
+    operator fun plus(money: Money): Money { 
+        val sum = value + money.value 
+        return Money(sum) 
+    } 
+    operator fun plus(newValue: Int): Money { 
+        val sum = value + newValue 
+        return Money(sum) 
+    } 
+} 
+```
+
+结合以上两种特性，可以实现：
+
+```kotlin
+operator fun String.times(n: Int): String { 
+    val builder = StringBuilder() 
+    repeat(n) { 
+        builder.append(this) 
+    } 
+    return builder.toString() 
+} 
+```
+
+# Kotlin 高级用法
+
+## 高阶函数
+
+如果一个函数**接收另一个函数作为参数**，或者**返回值的类型是另一个函数**，那么该函数就称为**高阶函数**。
+
+基本语法：
+
+```kotlin
+(String, Int) -> Unit 
+// 参数 -> 返回值（Unit 即 Void）
+fun foo(func: (String, Int) -> Unit) {
+    func("hello", 123)
+}
+fun main() {
+    foo(::bar)
+}
+```
+
+使用 Lambda 表达调用：
+
+```kotlin
+fun calc(a: Int, b: Int, func: (Int, Int) -> Int): Int {
+    return func(a, b)
+}
+fun main() {
+    calc(2, 3) { a, b ->
+        a + b
+    }
+}
+```
+
+在函数类型的前面加上 ClassName. 表示定义在哪个类中，传入的 Lambda 表达式自动拥有其上下文：
+
+```kotlin
+fun StringBuilder.build(block: StringBuilder.() -> Unit): StringBuilder {
+    block()
+    return this
+}
+fun main() {
+    val result = StringBuilder().build {
+        append("something")
+        append("something")
+        append("something")
+    }
+}
+```
+
+## 内联函数
+
+TODO
