@@ -490,3 +490,22 @@ fun main() {
 ## 内联函数
 
 TODO
+
+## 委托
+
+> 委托是一种设计模式，它的基本理念是：操作对象自己不会去处理某段逻辑，而是会把工作委托给另外一个辅助对象去处理。
+
+**类委托**
+
+```kotlin
+class MySet<T>(val helperSet: HashSet<T>) : Set<T> by helperSet {
+    fun helloWorld() = println("Hello World") 
+    override fun isEmpty() = false 
+} 
+```
+
+这样做，只需根据需求重写部分 Set 接口的函数即可，其余部分使用 helperSet 的实现。
+
+**属性委托**
+
+Todo
